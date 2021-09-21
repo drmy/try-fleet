@@ -1,0 +1,43 @@
+namespace: mariadb
+helm:
+  chart: https://github.com/drmy/try-fleet/raw/main/mariadb-galera-5.13.4.tgz
+targetCustomizations:
+- name: bj1
+  helm:
+    values:
+      podManagementPolicy: Parallel
+      galera:
+        bootstrap:
+          forceSafeToBootstrap: true
+      persistence:
+        storageClass: "openebs-hostpath"
+        size: 2Gi
+      rootUser:
+        password: "sensetime"
+      db:
+        user: "player"
+        password: "sensetime"
+        name: playertracking
+  clusterSelector:
+    matchLabels:
+      env: bj1
+
+- name: bj2
+  helm:
+    values:
+      podManagementPolicy: Parallel
+      galera:
+        bootstrap:
+          forceSafeToBootstrap: true
+      persistence:
+        storageClass: "openebs-hostpath"
+        size: 2Gi
+      rootUser:
+        password: "sensetime"
+      db:
+        user: "player"
+        password: "sensetime"
+        name: playertracking
+  clusterSelector:
+    matchLabels:
+      env: bj2
